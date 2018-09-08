@@ -7,11 +7,13 @@
 
 # cargamos librerias
 if(!require("pacman")) install.packages("pacman")
-p_load("tidyverse", "gganimate", "maps", "ggthemes")
+p_load("tidyverse", "gganimate", "maps", "ggthemes", "leaflet")
 
 # cargamos data 
 average_wages <- read_delim("dataset/gender-gap-in-average-wages-ilo.csv", delim = ",") %>% 
                  rename(region = Entity, gender_wage = `Gender wage gap (%) (%)`)
+
+# Usando maps  ------------------------------------------------------------
 
 world <- ggplot() + borders("world", colour = "black", fill = "gray80") + theme_map()
 
@@ -25,4 +27,18 @@ map <- world + geom_polygon(data = world_map,
 # http://www.rpubs.com/knm6/mapsI
 
 map
+
+# Usando leaflet ----------------------------------------------------------
+
+world_map <- world_map %>% 
+             rename(Long = long, Lat = lat)
+
+mapStates <-  maps::map("world", fill = TRUE, plot = FALSE)
+leaflet(data = mapStates) %>% addTiles() %>%
+  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE) 
+
+world_map %>% filter(region == "Brazil") %>% 
+leaflet() %>% 
+  addTiles() %>% 
+addPolygons(lng = ~long, lat = ~lat, group = ~group, fill = ~gender_wage)
 
