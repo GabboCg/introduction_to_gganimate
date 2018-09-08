@@ -2,7 +2,7 @@
 title: "gganimate"
 subtitle: "La gramática de gráficos animados"
 author: "Gabriel Cabrera"
-date: "2016/12/12 (updated: `r Sys.Date()`)"
+date: "2018/08/09 <br> (updated: `r Sys.Date()`)"
 output:
   xaringan::moon_reader:
     lib_dir: libs
