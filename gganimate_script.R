@@ -10,11 +10,15 @@
 
 # cargamos librerias
 if(!require("pacman")) install.packages("pacman")
-p_load("tidyverse", "gganimate", "maps", "ggthemes", "leaflet")
+p_load("tidyverse", "gganimate", "maps", "ggthemes", "leaflet", "DT", "lubridate", "magick")
 
 # cargamos data 
 average_wages <- read_delim("dataset/gender-gap-in-average-wages-ilo.csv", delim = ",") %>% 
                  rename(region = Entity, gender_wage = `Gender wage gap (%) (%)`)
+
+# muestra la base en html 
+datatable(average_wages, rownames = FALSE,
+          options = list(pageLength = 5))
 
 # Usando maps  ------------------------------------------------------------
 
@@ -31,17 +35,44 @@ map <- world + geom_polygon(data = world_map,
 
 map
 
+# gganimate ---------------------------------------------------------------
+
+world_map_animate <- world_map %>% 
+                     select(long, lat, group, Year, gender_wage, region) %>% 
+                     na.omit() %>% 
+                     arrange(Year)
+
+init <- tibble(
+  Year = 1981,
+  gender_wage = 0, long = 0, lat = 0
+)
+
+fin <- tibble(
+  Year = 2016,
+  gender_wage = 0, long = 0, lat = 0
+)
+
+map_animate <- world + 
+               geom_polygon(data = world_map_animate, 
+                            aes(x = long, y = lat, group = group, fill = gender_wage,
+                                frame = Year,
+                                cumulative = TRUE), 
+                            alpha = 0.5) + 
+               geom_polygon(data = init, 
+                            aes(x = long, y = lat, fill = gender_wage,
+                                frame = Year,
+                                cumulative = TRUE), 
+                            alpha = 0) +
+               geom_polygon(data = fin, 
+                            aes(x = long, y = lat, fill = gender_wage,
+                                frame = Year,
+                                cumulative = TRUE), 
+                            alpha = 0)
+
+
+gganimate(map_animate, interval = 0.2, ani.width = 1500, ani.height = 750, "average_wage.gif")
+
+
 # Usando leaflet ----------------------------------------------------------
 
-world_map <- world_map %>% 
-             rename(Long = long, Lat = lat)
-
-mapStates <-  maps::map("world", fill = TRUE, plot = FALSE)
-leaflet(data = mapStates) %>% addTiles() %>%
-  addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE) 
-
-world_map %>% filter(region == "Brazil")  %>% 
-leaflet() %>% 
-  addTiles() %>% 
-addPolygons(lng = ~Long, lat = ~Lat, group = ~group, fill = ~gender_wage)
 
