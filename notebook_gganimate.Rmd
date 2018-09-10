@@ -1,0 +1,28 @@
+---
+title: "gganimate: la gramática de los gráficos animados"
+author: <a href="https://gcabrerag.rbind.io/"> <h3> Gabriel Cabrera </h3> </a> \newline Facultad de Economía y Negocios, Universidad de Chile, Chile
+date: "2018/08/09 (updated: `r Sys.Date()`)"
+output:
+  bookdown::html_document2:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: true
+    theme: united
+    highlight: tango
+    df_print: paged
+    code_folding: show
+    self_contained: false
+    keep_md: false
+    encoding: "UTF-8"
+---
+
+  
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+knitr::opts_chunk$set(eval = TRUE, cache = FALSE, warning = FALSE, message = FALSE)
+```    
+
+<br>
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Este trabajo por <a rel="author" href="https://gcabrerag.rbind.io/"> Gabriel Cabrera </a> está licenciado bajo <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.

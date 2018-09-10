@@ -5,6 +5,9 @@
 #' date: "08/09/2018 `r Sys.Date()`"
 #'---
 
+# instalar gganimate
+# devtools::install_github("dgrtwo/gganimate", ref = "v0.1.1")
+
 # cargamos librerias
 if(!require("pacman")) install.packages("pacman")
 p_load("tidyverse", "gganimate", "maps", "ggthemes", "leaflet")
@@ -37,8 +40,8 @@ mapStates <-  maps::map("world", fill = TRUE, plot = FALSE)
 leaflet(data = mapStates) %>% addTiles() %>%
   addPolygons(fillColor = topo.colors(10, alpha = NULL), stroke = FALSE) 
 
-world_map %>% filter(region == "Brazil") %>% 
+world_map %>% filter(region == "Brazil")  %>% 
 leaflet() %>% 
   addTiles() %>% 
-addPolygons(lng = ~long, lat = ~lat, group = ~group, fill = ~gender_wage)
+addPolygons(lng = ~Long, lat = ~Lat, group = ~group, fill = ~gender_wage)
 
